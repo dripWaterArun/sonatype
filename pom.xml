@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--springboot 父工程-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.6</version>
+    </parent>
+
+    <!-- 项目信息 -->
+    <!-- 组 id：必须和你申请时的一致 -->
+    <groupId>io.github.dripWaterArun</groupId>
+    <!--工件 id：每个项目的 id 都不一样-->
+    <artifactId>sonatype-nexus-oss-parent</artifactId>
+    <!--
+        版本:
+        1.稳定版：RELEASE
+        2.快照版：SNAPSHOT
+    -->
+    <version>${sonatype-nexus-parent.version}</version>
+
+    <!--父工程使用 pom -->
+    <packaging>pom</packaging>
+    <!--项目名称-->
+    <name>sonatype-nexus-parent</name>
+    <!--描述-->
+    <description>上传到 mavne 中央仓库 nexus 仓库共通父级</description>
+
+    <!--项目地址-->
+    <url>https://github.com/dripWaterArun/sonatype-nexus-parent</url>
+    <inceptionYear>2023</inceptionYear>
+
+    <!--组织-->
+    <organization>
+        <name>Arun Group</name>
+        <url>https://github.com/dripWaterArun</url>
+    </organization>
+
+    <!-- 开发者信息，根据实际情况修改 -->
+    <developers>
+        <developer>
+            <!--开发者名-->
+            <name>戴煦</name>
+            <!--邮箱-->
+            <email>daixu_arun@sina.com</email>
+            <!--开发者主页-->
+            <url>https://github.com/dripWaterArun</url>
+        </developer>
+    </developers>
+
+    <!-- 项目设定 -->
+    <properties>
+
+        <!-- 项目所用插件依赖版本 -->
+        <lombok.version>1.18.26</lombok.version>
+        <!--gpg 加密插件，发布到中央仓库的时候使用-->
+        <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+        <!--源码发布插件，发布到中央仓库的时候使用-->
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <!--生成 javadoc 文档插件，发布到中央仓库的时候使用-->
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <!--nexus 发布到中央仓库插件，发布到中央仓库的时候使用-->
+        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+
+        <!-- 版本类型：默认快照版以 SNAPSHOT 结尾 -->
+        <versionType>SNAPSHOT</versionType>
+        <!--repository id：默认快照版 snapshots -->
+        <repository-id>snapshots</repository-id>
+        <!--发布 RELEASES 稳定版 开关（默认 false） -->
+        <enabled-releases>false</enabled-releases>
+        <!--发布 SNAPSHOTS 快照版 开关（默认 false） -->
+        <enabled-snapshots>false</enabled-snapshots>
+        <!--repository name：默认快照版 name -->
+        <repository-name>Snapshots</repository-name>
+        <!--默认发布快照地址-->
+        <default-url>${sonatypeOssDistMgmtSnapshotsUrl}</default-url>
+        <!-- 项目版本号 -->
+        <sonatype-nexus-parent.version>1.0.0-${versionType}</sonatype-nexus-parent.version>
+
+        <!--指定项目源码 jdk 版本-->
+        <jdk.version>18</jdk.version>
+        <maven.compiler.source>${jdk.version}</maven.compiler.source>
+        <maven.compiler.target>${jdk.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--快照地址-->
+        <sonatypeOssDistMgmtSnapshotsUrl>https://s01.oss.sonatype.org/content/repositories/snapshots</sonatypeOssDistMgmtSnapshotsUrl>
+        <!--稳定版地址-->
+        <sonatypeOssDistMgmtReleaseUrl>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</sonatypeOssDistMgmtReleaseUrl>
+
+    </properties>
+
+    <!--依赖的顺序，越靠前面优先级越高-->
+    <dependencyManagement>
+
+        <dependencies>
+
+            <!--lombok 插件-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <!-- 仓库信息，根据实际情况修改 -->
+    <scm>
+        <!--项目 git 仓库地址-->
+        <url>https://github.com/dripWaterArun/sonatype-nexus-parent</url>
+        <!-- connection 与 developerConnection 写一个就可以-->
+        <!--项目 git 克隆地址(只读) RELEASE 版本-->
+        <connection>https://github.com/dripWaterArun/sonatype-nexus-parent.git</connection>
+        <!--项目 git 克隆地址（读写）SNAPSHOT 版本-->
+        <developerConnection>https://github.com/dripWaterArun/sonatype-nexus-parent.git</developerConnection>
+    </scm>
+
+    <!-- 许可证信息，这里是 Apache 2.0 的许可证，根据实际情况修改 -->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version2.0</name>
+            <url>https://www.apache.org/licenses/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <!--发布到中央仓库的版本：默认发快照版本-->
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-${repository-id}</id>
+            <name>Sonatype Nexus ${repository-name}</name>
+            <url>${default-url}</url>
+            <releases>
+                <enabled>${enabled-releases}</enabled>
+            </releases>
+            <snapshots>
+                <enabled>${enabled-snapshots}</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!--定义 snapshots 库和 releases 库的 nexus 地址-->
+    <distributionManagement>
+
+        <!--SNAPSHOTS：快照版本 -->
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>${sonatypeOssDistMgmtSnapshotsUrl}</url>
+        </snapshotRepository>
+
+        <!--RELEASES：稳定版本 -->
+        <repository>
+            <id>ossrh</id>
+            <name>Nexus Release Repository</name>
+            <url>${sonatypeOssDistMgmtReleaseUrl}</url>
+        </repository>
+
+    </distributionManagement>
+
+    <build>
+
+        <!-- pluginManagement 标签用于父 pom 中，子元素可以包含 plugins 插件 -->
+        <pluginManagement>
+
+            <plugins>
+                <!--
+                    Nexus 插件：sonatype 官网提供，部署到 OSSRH Nexus 存储库管理器插件
+                    RELEASES 稳定版发布必须要用的插件，上传jar包到仓库的插件
+                -->
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${nexus-staging-maven-plugin.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+
+                <!-- gpg 插件（必须）：用于签名认证 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven-gpg-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- source 插件（选用）：生成 source 文件-->
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!--Javadoc 插件（选用）：生成 Javadoc 文件-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+
+        </pluginManagement>
+
+    </build>
+
+    <!-- 根据不同的环境配置发布的版本 -->
+    <profiles>
+
+        <!-- 测试版：快照不发布到中央仓库-->
+        <profile>
+            <id>test</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profileActive>test</profileActive>
+                <versionType>SNAPSHOT</versionType>
+            </properties>
+        </profile>
+
+        <!-- 快照版：SNAPSHOT (发布到中央仓库) -->
+        <profile>
+            <id>snapshot</id>
+            <properties>
+                <profileActive>snapshot</profileActive>
+            </properties>
+
+            <build>
+                <!-- 快照版 SNAPSHOTS 所需插件 -->
+                <plugins>
+
+                    <!-- 发布到中央仓库所需插件 -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+
+                    <!-- gpg 插件（必须）：用于签名认证 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+
+                    <!-- source 插件（选用）：生成 source 文件-->
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven-source-plugin.version}</version>
+                    </plugin>
+
+                    <!--Javadoc 插件（选用）：生成 Javadoc 文件-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
+
+        <!-- 稳定版：RELEASE (发布到中央仓库) -->
+        <profile>
+            <id>release</id>
+            <properties>
+                <profileActive>release</profileActive>
+                <!-- 版本类型：稳定版以 RELEASE 结尾 -->
+                <versionType>RELEASE</versionType>
+                <!--repository id：RELEASES 稳定版 -->
+                <repository-id>releases</repository-id>
+                <!-- 发布稳定版（RELEASE）-->
+                <enabled-releases>true</enabled-releases>
+                <!--repository name：RELEASES 稳定版 -->
+                <repository-name>Releases</repository-name>
+                <!-- 发布快照版（SNAPSHOT） -->
+                <enabled-snapshots>false</enabled-snapshots>
+                <!--发布 RELEASE 稳定版 地址-->
+                <default-url>${sonatypeOssDistMgmtReleaseUrl}</default-url>
+            </properties>
+
+            <build>
+                <!-- 稳定版 RELEASE 所需插件 -->
+                <plugins>
+
+                    <!-- 发布到中央仓库所需插件 -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+
+                    <!-- gpg 插件（必须）：用于签名认证 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+
+                    <!-- source 插件（选用）：生成 source 文件-->
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven-source-plugin.version}</version>
+                    </plugin>
+
+                    <!--Javadoc 插件（选用）：生成 Javadoc 文件-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
+
+    </profiles>
+
+</project>
