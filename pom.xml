@@ -72,11 +72,13 @@
         <!--repository id：默认快照版 snapshots -->
         <repository-id>snapshots</repository-id>
         <!--发布 RELEASES 稳定版 开关（默认 false） -->
-        <enabled-releases>false</enabled-releases>
+        <releases-enabled>false</releases-enabled>
         <!--发布 SNAPSHOTS 快照版 开关（默认 false） -->
-        <enabled-snapshots>false</enabled-snapshots>
+        <snapshots-enabled>false</snapshots-enabled>
         <!--repository name：默认快照版 name -->
         <repository-name>Snapshots</repository-name>
+        <!--上传中央仓库开关-->
+        <autoReleaseAfterClose>false</autoReleaseAfterClose>
         <!--默认发布快照地址-->
         <default-url>${sonatypeOssDistMgmtSnapshotsUrl}</default-url>
         <!-- 项目版本号 -->
@@ -138,10 +140,10 @@
             <name>Sonatype Nexus ${repository-name}</name>
             <url>${default-url}</url>
             <releases>
-                <enabled>${enabled-releases}</enabled>
+                <enabled>${releases-enabled}</enabled>
             </releases>
             <snapshots>
-                <enabled>${enabled-snapshots}</enabled>
+                <enabled>${snapshots-enabled}</enabled>
             </snapshots>
         </repository>
     </repositories>
@@ -183,7 +185,7 @@
                     <configuration>
                         <serverId>ossrh</serverId>
                         <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        <autoReleaseAfterClose>${autoReleaseAfterClose}</autoReleaseAfterClose>
                     </configuration>
                 </plugin>
 
@@ -243,7 +245,7 @@
 
         <!-- 测试版：快照不发布到中央仓库-->
         <profile>
-            <id>test</id>
+            <id>nexus</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -258,6 +260,10 @@
             <id>snapshot</id>
             <properties>
                 <profileActive>snapshot</profileActive>
+                <!-- 发布快照版（SNAPSHOT） -->
+                <snapshots-enabled>true</snapshots-enabled>
+                <!--发布到中央仓库开关-->
+                <autoReleaseAfterClose>true</autoReleaseAfterClose>
             </properties>
 
             <build>
@@ -303,11 +309,13 @@
                 <!--repository id：RELEASES 稳定版 -->
                 <repository-id>releases</repository-id>
                 <!-- 发布稳定版（RELEASE）-->
-                <enabled-releases>true</enabled-releases>
+                <releases-enabled>true</releases-enabled>
                 <!--repository name：RELEASES 稳定版 -->
                 <repository-name>Releases</repository-name>
                 <!-- 发布快照版（SNAPSHOT） -->
-                <enabled-snapshots>false</enabled-snapshots>
+                <snapshots-enabled>false</snapshots-enabled>
+                <!--上传中央仓库开关-->
+                <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 <!--发布 RELEASE 稳定版 地址-->
                 <default-url>${sonatypeOssDistMgmtReleaseUrl}</default-url>
             </properties>
