@@ -2,25 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.example</groupId>
-        <artifactId>sonatype-build</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+    <modelVersion>4.0.0</modelVersion>
 
     <!-- 项目信息 -->
     <!-- 组 id：必须和你申请时的一致 -->
     <groupId>io.github.dripWaterArun</groupId>
     <!--工件 id：每个项目的 id 都不一样-->
-    <artifactId>sonatype-nexus-parent</artifactId>
+    <artifactId>sonatype-nexus-oss-parent</artifactId>
     <!--
         版本:
         1.稳定版：RELEASE
         2.快照版：SNAPSHOT
     -->
-    <version>1.2.13-${versionType}</version>
+    <version>1.2.3-SNAPSHOT</version>
 
     <!--父工程使用 pom -->
     <packaging>pom</packaging>
@@ -99,7 +94,7 @@
         <!--项目 git 克隆地址(只读) RELEASE 版本-->
         <connection>https://github.com/dripWaterArun/sonatype.git</connection>
         <!--项目 git 克隆地址（读写）SNAPSHOT 版本-->
-        <developerConnection>https://github.com/dripWaterArun/sonatype.git</developerConnection>
+<!--        <developerConnection>https://github.com/dripWaterArun/sonatype.git</developerConnection>-->
     </scm>
 
     <!-- 许可证信息，这里是 Apache 2.0 的许可证，根据实际情况修改 -->
@@ -222,9 +217,22 @@
     <!-- 根据不同的环境配置发布的版本 -->
     <profiles>
 
-        <!-- 快照版：SNAPSHOT (发布到中央仓库) -->
+        <!-- 自动发布开关 -->
+        <profile>
+            <id>auto</id>
+            <properties>
+                <profileActive>auto</profileActive>
+                <!--上传中央仓库自动发布开关 true 自动发布 false 手动发布-->
+                <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </properties>
+        </profile>
+
+        <!-- 快照版：SNAPSHOT -->
         <profile>
             <id>snapshot</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <profileActive>snapshot</profileActive>
                 <!-- 版本类型：默认快照版以 SNAPSHOT 结尾 -->
@@ -248,13 +256,13 @@
                 <!-- 发布快照版（SNAPSHOT） -->
                 <!--                <snapshots-enabled>false</snapshots-enabled>-->
                 <!--上传中央仓库开关-->
-                <autoReleaseAfterClose>false</autoReleaseAfterClose>
+<!--                <autoReleaseAfterClose>false</autoReleaseAfterClose>-->
                 <!--发布 RELEASE 稳定版 地址-->
                 <!--                <default-url>${sonatypeOssDistMgmtReleaseUrl}</default-url>-->
             </properties>
 
             <build>
-                <!-- 稳定版 RELEASE 所需插件 -->
+                <!-- 发行版 RELEASE -->
                 <plugins>
 
                     <!-- 发布到中央仓库所需插件 -->
