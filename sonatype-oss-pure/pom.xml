@@ -14,14 +14,14 @@
     <!-- 组 id：必须和你申请时的一致 -->
     <groupId>io.github.dripWaterArun</groupId>
     <!--工件 id：每个项目的 id 都不一样-->
-    <artifactId>sonatype-oss-pure</artifactId>
-<!--    <artifactId>sonatype-nexus-parent</artifactId>-->
+    <!--sonatype-nexus-parent  sonatype-oss-pure-->
+    <artifactId>sonatype-nexus-parent</artifactId>
     <!--
         版本:
         1.稳定版：RELEASE
         2.快照版：SNAPSHOT
     -->
-    <version>1.2.8-RELEASE</version>
+    <version>1.2.12-RELEASE</version>
 
     <!-- 项目设定 -->
     <properties>
@@ -154,13 +154,14 @@
 
             <!-- source 插件（选用）：生成 source 文件-->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
