@@ -11,8 +11,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>sonatype-oss-pure</module>
-        <module>sonatype-oss-parent</module>
+        <module>pure</module>
+        <module>parent</module>
     </modules>
 
 </project>
