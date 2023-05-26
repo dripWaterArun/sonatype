@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>io.seata</groupId>
+        <artifactId>seata-spring-boot-starter</artifactId>
+        <version>1.6.1</version>
+    </parent>
+
     <!-- 项目信息 -->
     <!-- 组 id：必须和你申请时的一致 -->
     <groupId>io.github.dripWaterArun</groupId>
@@ -15,7 +21,7 @@
         1.稳定版：RELEASE
         2.快照版：SNAPSHOT
     -->
-    <version>1.2.12-RELEASE</version>
+    <version>1.2.13-RELEASE</version>
 
     <!-- 项目设定 -->
     <properties>
@@ -126,7 +132,7 @@
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                     <!--发布模式开关：false 手动发布 true 自动发布-->
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 </configuration>
             </plugin>
 

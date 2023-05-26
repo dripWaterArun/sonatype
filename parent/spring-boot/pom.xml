@@ -5,24 +5,31 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.6</version>
+        <relativePath/>
+    </parent>
+
     <!-- 项目信息 -->
+
     <!-- 组 id：必须和你申请时的一致 -->
     <groupId>io.github.dripWaterArun</groupId>
     <!--工件 id：每个项目的 id 都不一样-->
-    <artifactId>sonatype-nexus-oss-parent</artifactId>
+    <artifactId>sonatype-oss-spring-boot-starter-parent</artifactId>
     <!--
         版本:
         1.稳定版：RELEASE
         2.快照版：SNAPSHOT
     -->
-    <version>1.2.3-SNAPSHOT</version>
-
+    <version>3.0.6-SNAPSHOT</version>
     <!--父工程使用 pom -->
     <packaging>pom</packaging>
     <!--项目名称-->
-    <name>sonatype-nexus-parent</name>
+    <name>spring-boot-starter</name>
     <!--描述-->
-    <description>上传中央仓库共通父工程</description>
+    <description>上传中央仓库 spring-boot 共通父工程</description>
 
     <!--项目地址-->
     <url>https://github.com/dripWaterArun/sonatype</url>
@@ -46,11 +53,6 @@
         </developer>
     </developers>
 
-    <modules>
-        <module>spring-boot</module>
-        <module>oss</module>
-    </modules>
-
     <!-- 项目设定 -->
     <properties>
 
@@ -65,19 +67,8 @@
         <!--nexus 发布到中央仓库插件，发布到中央仓库的时候使用-->
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 
-        <!--repository id：默认快照版 snapshots -->
-        <!--        <repository-id>snapshots</repository-id>-->
-        <!--发布 RELEASES 稳定版 开关（默认 false） -->
-        <!--        <releases-enabled>false</releases-enabled>-->
-        <!--发布 SNAPSHOTS 快照版 开关（默认 false） -->
-        <!--        <snapshots-enabled>false</snapshots-enabled>-->
-        <!--repository name：默认快照版 name -->
-        <repository-name>Snapshots</repository-name>
         <!--上传中央仓库开关-->
         <autoReleaseAfterClose>false</autoReleaseAfterClose>
-        <!--默认发布快照地址-->
-        <!--        <default-url>${sonatypeOssDistMgmtSnapshotsUrl}</default-url>-->
-
         <!--指定项目源码 jdk 版本-->
         <jdk.version>18</jdk.version>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
@@ -99,7 +90,7 @@
         <!--项目 git 克隆地址(只读) RELEASE 版本-->
         <connection>https://github.com/dripWaterArun/sonatype.git</connection>
         <!--项目 git 克隆地址（读写）SNAPSHOT 版本-->
-<!--        <developerConnection>https://github.com/dripWaterArun/sonatype.git</developerConnection>-->
+        <developerConnection>https://github.com/dripWaterArun/sonatype.git</developerConnection>
     </scm>
 
     <!-- 许可证信息，这里是 Apache 2.0 的许可证，根据实际情况修改 -->
@@ -110,21 +101,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-    <!--发布到中央仓库的版本：默认发快照版本-->
-    <!--    <repositories>-->
-    <!--        <repository>-->
-    <!--            <id>sonatype-nexus-${repository-id}</id>-->
-    <!--            <name>Sonatype Nexus ${repository-name}</name>-->
-    <!--            <url>${default-url}</url>-->
-    <!--            <releases>-->
-    <!--                <enabled>${releases-enabled}</enabled>-->
-    <!--            </releases>-->
-    <!--            <snapshots>-->
-    <!--                <enabled>${snapshots-enabled}</enabled>-->
-    <!--            </snapshots>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
 
     <!--定义 snapshots 库和 releases 库的 nexus 地址-->
     <distributionManagement>
@@ -146,10 +122,8 @@
     </distributionManagement>
 
     <build>
-
         <!-- pluginManagement 标签用于父 pom 中，子元素可以包含 plugins 插件 -->
         <pluginManagement>
-
             <plugins>
                 <!--
                     Nexus 插件：sonatype 官网提供，部署到 OSSRH Nexus 存储库管理器插件
@@ -159,12 +133,6 @@
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>${nexus-staging-maven-plugin.version}</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <serverId>ossrh</serverId>
-                        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                        <autoReleaseAfterClose>${autoReleaseAfterClose}</autoReleaseAfterClose>
-                    </configuration>
                 </plugin>
 
                 <!-- gpg 插件（必须）：用于签名认证 -->
@@ -172,15 +140,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>${maven-gpg-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>sign-artifacts</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sign</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
 
                 <!-- source 插件（选用）：生成 source 文件-->
@@ -188,14 +147,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${maven-source-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
 
                 <!--Javadoc 插件（选用）：生成 Javadoc 文件-->
@@ -203,20 +154,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>attach-javadocs</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
-
             </plugins>
-
         </pluginManagement>
-
     </build>
 
     <!-- 根据不同的环境配置发布的版本 -->
@@ -234,7 +174,7 @@
 
         <!-- 快照版：SNAPSHOT -->
         <profile>
-            <id>snapshot</id>
+            <id>oss-snapshot</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -247,23 +187,11 @@
 
         <!-- 稳定版：RELEASE (发布到中央仓库) -->
         <profile>
-            <id>release</id>
+            <id>oss-release</id>
             <properties>
                 <profileActive>release</profileActive>
                 <!-- 版本类型：稳定版以 RELEASE 结尾 -->
                 <versionType>RELEASE</versionType>
-                <!--                &lt;!&ndash;repository id：RELEASES 稳定版 &ndash;&gt;-->
-                <!--                <repository-id>releases</repository-id>-->
-                <!--                &lt;!&ndash; 发布稳定版（RELEASE）&ndash;&gt;-->
-                <!--                <releases-enabled>true</releases-enabled>-->
-                <!--                &lt;!&ndash;repository name：RELEASES 稳定版 &ndash;&gt;-->
-                <!--                <repository-name>Releases</repository-name>-->
-                <!-- 发布快照版（SNAPSHOT） -->
-                <!--                <snapshots-enabled>false</snapshots-enabled>-->
-                <!--上传中央仓库开关-->
-<!--                <autoReleaseAfterClose>false</autoReleaseAfterClose>-->
-                <!--发布 RELEASE 稳定版 地址-->
-                <!--                <default-url>${sonatypeOssDistMgmtReleaseUrl}</default-url>-->
             </properties>
 
             <build>
@@ -274,24 +202,55 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>${autoReleaseAfterClose}</autoReleaseAfterClose>
+                        </configuration>
                     </plugin>
 
                     <!-- gpg 插件（必须）：用于签名认证 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
 
                     <!-- source 插件（选用）：生成 source 文件-->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
 
                     <!--Javadoc 插件（选用）：生成 Javadoc 文件-->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
 
                 </plugins>
